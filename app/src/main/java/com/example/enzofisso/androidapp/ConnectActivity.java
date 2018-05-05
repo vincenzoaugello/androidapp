@@ -15,23 +15,7 @@ public class ConnectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-
-        Intent intConn = getIntent();
-        String stIpAddr = intConn.getStringExtra("ipAddr");
-        String stPort = intConn.getStringExtra("port");
-
-        MakeConnection(stIpAddr, Integer.valueOf(stPort));
     }
 
-    private void MakeConnection(String ip, int port) {
-        Socket servSock = null;
-        try {
-            servSock = new Socket(ip, port);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
 }
