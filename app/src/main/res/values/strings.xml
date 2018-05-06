@@ -5,4 +5,7 @@
     <string name="server_info">File Server Info</string>
     <string name="connect">Connetti</string>
     <string name="empty_hint"> </string>
+    <string name="actions">Azioni disponibili</string>
+    <string name="send_file">Invia File</string>
+    <string name="recv_file">Ricevi File</string>
 </resources>

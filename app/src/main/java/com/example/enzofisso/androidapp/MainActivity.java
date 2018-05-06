@@ -7,13 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -35,45 +28,20 @@ public class MainActivity extends AppCompatActivity {
             ipAddr = "";
             port = -1;
         }
-        if(port == -1)return;
+        if(port == -1 || ipAddr.equals("")) {
+            Toast.makeText(getApplicationContext(), "Dati non validi", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Socket sock = new MySocket(ipAddr, port).getSocket();
+        MySocket sock = MySocket.getInstance();
+        sock.connect(ipAddr, port);
 
-        if(sock != null) {
+        if(sock.isConnected()) {
             Toast.makeText(getApplicationContext(),"Connessione avvenuta con successo", Toast.LENGTH_SHORT).show();
-                /*Intent intConn = new Intent(this, ConnectActivity.class);
-                intConn.putExtra("ipAddr", stIpAddr);
-                intConn.putExtra("port", stPort);
-                startActivity(intConn);*/
+            Intent intConn = new Intent(this, ConnectActivity.class);
+            startActivity(intConn);
         }
 
         else Toast.makeText(getApplicationContext(),"Connessione fallita", Toast.LENGTH_SHORT).show();
-    }
-
-    class MySocket {
-        Socket sock;
-
-        MySocket(String ip, int port) {
-            Thread threadConn = new Thread(() -> {
-                try {
-                    SocketAddress sockaddr = new InetSocketAddress(ip, port);
-                    sock = new Socket();
-                    sock.connect(sockaddr, 5000);
-                } catch (UnknownHostException e) {
-                    sock = null;
-                } catch (SocketTimeoutException e) {
-                    sock = null;
-                } catch (IOException e) {
-                    sock = null;
-                }
-            });
-            threadConn.start();
-            try {threadConn.join();}
-            catch (InterruptedException e) {e.printStackTrace();}
-        }
-
-        Socket getSocket() {
-            return sock;
-        }
     }
 }
